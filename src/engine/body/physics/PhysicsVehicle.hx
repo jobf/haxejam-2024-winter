@@ -10,7 +10,7 @@ class PhysicsVehicle extends Physics {
 	var acceleration:Acceleration = {
 		friction: 0.2,
 		spin: 1.2,
-		thrust: 0.6,
+		thrust: 0.3,
 		max_delta_r: 3.8,
 		max_delta_x: 1.2,
 		max_delta_y: 35.2,

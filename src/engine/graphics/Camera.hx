@@ -197,6 +197,18 @@ class Camera {
 		display.zoom = value;
 		return display.zoom;
 	}
+
+	public function zero() {
+		offset_x = 0;
+		previous_offset_x = 0;
+		offset_y = 0;
+		previous_offset_y = 0;
+	}
+
+	public function stop() {
+		previous_offset_x = offset_x;
+		previous_offset_y = offset_y;
+	}
 }
 
 class CameraDebug {

@@ -27,6 +27,7 @@ abstract class Body<TSkin:Skin, TPhysics:Physics> {
         
         var r = lerp(physics.position.r_previous, physics.position.r, frame_ratio);
         skin.rotate(r);
+
     }
 }
 

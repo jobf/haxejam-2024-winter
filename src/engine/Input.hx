@@ -62,7 +62,7 @@ class Input {
 			},
 			{
 				gamepad: GamepadButton.A,
-				keyboard: [KeyCode.LEFT_CTRL, KeyCode.RIGHT_CTRL],
+				keyboard: [KeyCode.RETURN, KeyCode.NUMPAD_ENTER],
 				action: "a"
 			},
 			{
@@ -70,11 +70,11 @@ class Input {
 				keyboard: KeyCode.BACKSPACE,
 				action: "back"
 			},
-			{
-				gamepad: GamepadButton.START,
-				keyboard: KeyCode.RETURN,
-				action: "start"
-			},
+			// {
+			// 	gamepad: GamepadButton.START,
+			// 	keyboard: KeyCode.RETURN,
+			// 	action: "start"
+			// },
 			{
 				keyboard: KeyCode.PERIOD,
 				action: "edit."

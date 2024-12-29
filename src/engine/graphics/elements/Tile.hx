@@ -1,5 +1,6 @@
 package engine.graphics.elements;
 
+import lime.graphics.Image;
 import peote.view.*;
 
 class Tile implements Element {
@@ -17,7 +18,7 @@ class Tile implements Element {
 	@sizeY public var height:Int;
 
 	/** Tint the element with RGBA color. **/
-	@color public var tint:Color = 0xffffff40;
+	@color public var tint:Color = 0xffffffff;
 	
 	/** Index of tile in texture. Tiles are arranged left to right, row by row. **/
 	@texTile public var tile_index:Int = 0;
@@ -49,13 +50,31 @@ class Tile implements Element {
 		tile_index = index;
 	}
 
-	public static function init_buffer(display:Display, size:Int = 256, texture:TextureData, tile_size:Int, init:Program->Void = null) {
+	public static function init_buffer(display:Display, size:Int = 256, texture:Image, tile_size:Int, init:Program->Void = null) {
 		var buffer = new Buffer<Tile>(size, size);
 		var program = new Program(buffer);
 		// program.blendEnabled = true;
-		var tex = Texture.fromData(texture);
-		tex.tilesX = Std.int(tex.width / tile_size);
-		tex.tilesY = Std.int(tex.height / tile_size);
+		// var tiles_x = Std.int(texure.width / tile_size);
+		// var tiles_y = Std.int(tex.height / tile_size);
+
+		var textureConfig:TextureConfig = {
+			// maxTextureSize: maxTextureSize,
+			// slotsX: slotsX,
+			// slotsY: slotsY,
+			// powerOfTwo: powerOfTwo,
+			tilesX: Std.int(texture.width / tile_size),
+			tilesY: Std.int(texture.height / tile_size),
+			// format: format,
+			// smoothExpand: true,
+			// smoothShrink: true,
+			// // mipmap: mipmap,
+			// smoothMipmap: true
+		}
+		// var tex = Texture.fromData(texture);
+		var tex = new Texture(texture.width, texture.height, textureConfig);
+		tex.setData(texture);
+		// tex.tilesX = Std.int(tex.width / tile_size);
+		// tex.tilesY = Std.int(tex.height / tile_size);
 		program.setTexture(tex);
 		if (init != null) {
 			init(program);

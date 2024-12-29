@@ -24,9 +24,9 @@ class Main extends Application {
 	override function onPreloadComplete() {
 		
 		var game_display = new Framebuffer(peote_view, window.width, window.height);
-		Filters.bloom(game_display, 3);
+		// Filters.bloom(game_display, 3);
 		
-		var display = new Display(0, 0, window.width, window.height, Color.GREY1);
+		var display = new Display(0, 0, window.width, window.height);
 		peote_view.addDisplay(display);
 		game_display.render_to(display);
 
@@ -37,5 +37,7 @@ class Main extends Application {
 		game = new Game(game_display, hud_display, input);
 
 		onUpdate.add(deltaTime -> game.frame(deltaTime));
+		
+		peote_view.start();
 	}
 }

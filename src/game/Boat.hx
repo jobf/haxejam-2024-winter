@@ -14,14 +14,12 @@ using StringTools;
 
 var RADIANS = Math.PI / 180;
 
-class SkinBoat extends SkinBasic
-{
+class SkinBoat extends SkinBasic {
 	var pointer:Basic;
 	var side_left:Basic;
 	var side_right:Basic;
 	var side_left_front:Basic;
 	var side_right_front:Basic;
-	var tip:Basic;
 	var sprite:Tile;
 
 	public function new(x:Float, y:Float, size:Float) {
@@ -40,30 +38,14 @@ class SkinBoat extends SkinBasic
 		side_right_front.tint.a = boat_bits;
 		sprite = new Tile(x, y, 175, 0);
 		sprite.pivot_y = 0.82;
-		sprite.tint = Color.GREY6;
-		// pointer.to_line(x, y, x + 200, y + 200);
+		sprite.tint = Color.WHITE;
 		pointer.to_line(x, y, x + length, y + length, false);
 
-		var r = pointer.angle * RADIANS;
-		var tip_x = x + length * Math.cos(r);
-		var tip_y = x + length * Math.sin(r);
-		tip = new Basic(tip_x, tip_y, 10, 10,  0xf000f005);
-		tip.angle = 45;
-
-		//left side
-		var r = pointer.angle * RADIANS;
-		var tip_x = x + length * Math.cos(r);
-		var tip_y = x + length * Math.sin(r);
-		// tip = new Basic(tip_x, tip_y, 10, 10,  0xf000f050);
-		tip.angle = 45;
-
-		
 	}
 
-	override public function add_to_buffer(buffer:Buffer<Basic>){
+	override public function add_to_buffer(buffer:Buffer<Basic>) {
 		super.add_to_buffer(buffer);
 		buffer.addElement(pointer);
-		buffer.addElement(tip);
 		buffer.addElement(side_left);
 		buffer.addElement(side_right);
 		buffer.addElement(side_left_front);
@@ -71,39 +53,36 @@ class SkinBoat extends SkinBasic
 	}
 
 	var length = 130;
+
 	override public function move(x:Float, y:Float) {
 		super.move(x, y);
 		sprite.x = x;
 		sprite.y = y;
 
 		var r = (element.angle - 90) * RADIANS;
-		var tip_x = element.x + (length * Math.cos(r) );
-		var tip_y = element.y + (length * Math.sin(r) );
-		tip.x = tip_x;
-		tip.y = tip_y;
+		var tip_x = element.x + (length * Math.cos(r));
+		var tip_y = element.y + (length * Math.sin(r));
 
-		pointer.to_line(element.x, element.y, tip.x, tip.y, false);
-		
+		pointer.to_line(element.x, element.y, tip_x, tip_y, false);
+
 		var r = (element.angle - 90 - 45) * RADIANS;
-		var tip_x = element.x + (length * 0.37 * Math.cos(r) );
-		var tip_y = element.y + (length * 0.37 * Math.sin(r) );
+		var tip_x = element.x + (length * 0.37 * Math.cos(r));
+		var tip_y = element.y + (length * 0.37 * Math.sin(r));
 		side_left.to_line(element.x, element.y, tip_x, tip_y, false);
-		
+
 		var r = (element.angle - 90 + 45) * RADIANS;
-		var tip_x = element.x + (length * 0.37 * Math.cos(r) );
-		var tip_y = element.y + (length * 0.37 * Math.sin(r) );
+		var tip_x = element.x + (length * 0.37 * Math.cos(r));
+		var tip_y = element.y + (length * 0.37 * Math.sin(r));
 		side_right.to_line(element.x, element.y, tip_x, tip_y, false);
 
-
-
 		var r = (element.angle - 90 - 15) * RADIANS;
-		var tip_x = element.x + (length * 0.77 * Math.cos(r) );
-		var tip_y = element.y + (length * 0.77 * Math.sin(r) );
+		var tip_x = element.x + (length * 0.77 * Math.cos(r));
+		var tip_y = element.y + (length * 0.77 * Math.sin(r));
 		side_left_front.to_line(element.x, element.y, tip_x, tip_y, false);
-		
+
 		var r = (element.angle - 90 + 15) * RADIANS;
-		var tip_x = element.x + (length * 0.77 * Math.cos(r) );
-		var tip_y = element.y + (length * 0.77 * Math.sin(r) );
+		var tip_x = element.x + (length * 0.77 * Math.cos(r));
+		var tip_y = element.y + (length * 0.77 * Math.sin(r));
 		side_right_front.to_line(element.x, element.y, tip_x, tip_y, false);
 	}
 
@@ -111,7 +90,18 @@ class SkinBoat extends SkinBasic
 		super.rotate(angle);
 		sprite.angle = angle;
 		pointer.angle = this.element.angle - 90;
-		tip.angle = pointer.angle - 45;
+	}
+
+	function set_person_mode() {
+		sprite.tint.a = 0;
+		element.tint.a = 255;
+		pointer.tint.a = 255;
+	}
+
+	function set_boat_mode() {
+		sprite.tint.a = 255;
+		element.tint.a = 0;
+		pointer.tint.a = 0;
 	}
 }
 
@@ -127,6 +117,7 @@ class Boat extends Vehicle<SkinBoat> {
 	var thrust:Float = 0;
 	var state:State<SkinBoat, PhysicsVehicle>;
 	var overlapping_for:Int = 0;
+	var is_on_water:Bool = true;
 
 	function on_collide(side_x:Int, side_y:Int) {}
 
@@ -135,10 +126,7 @@ class Boat extends Vehicle<SkinBoat> {
 
 	public function new(column:Int, row:Int, size:Int, space:Int, buffer:Buffer<Basic>, projectiles:ObjectCache<Projectile>) {
 		state = new BoatDoNothin(this);
-		this.states = [
-			IDLE => state,
-			EXPIRED => state,
-		];
+		this.states = [IDLE => state, EXPIRED => state,];
 		this.projectiles = projectiles;
 		this.placement_x = (space * column);
 		this.placement_y = (space * row);
@@ -200,6 +188,24 @@ class Boat extends Vehicle<SkinBoat> {
 		}
 	}
 
+	public function collides_with(line:Basic) {
+		if(is_on_water){
+			return skin.pointer.is_intersection(line)
+			|| skin.side_left.is_intersection(line)
+			|| skin.side_right.is_intersection(line)
+			|| skin.side_left_front.is_intersection(line)
+			|| skin.side_right_front.is_intersection(line);
+		}
+		else{
+			return skin.pointer.is_intersection(line)
+			// || skin.side_left.is_intersection(line)
+			// || skin.side_right.is_intersection(line)
+			// || skin.side_left_front.is_intersection(line)
+			// || skin.side_right_front.is_intersection(line)
+			;
+		}
+	}
+
 	var path_index = 0;
 
 	override function update() {
@@ -224,17 +230,59 @@ class Boat extends Vehicle<SkinBoat> {
 	}
 
 	public function reset() {
+		overlapping_for = 0;
 		physics.stop_steer();
 		physics.stop_thrust();
 		physics.thrust_delta = 0;
 		// physics.acceleration.thrust = 0;
 		// physics.acceleration.spin = 0;
-		
+
 		physics.position.r_previous = 0;
 		physics.position.r = 0;
 		physics.velocity.delta_r = 0;
 		physics.velocity.delta_x = 0;
 		physics.velocity.delta_y = 0;
+	}
+
+	public function set_boat_mode() {
+		is_on_water = true;
+		skin.set_boat_mode();
+		skin.length = 130;
+		physics.acceleration.friction =  0.2;
+		physics.acceleration.spin =  1.2;
+		physics.acceleration.thrust =  0.3;
+		physics.acceleration.max_delta_r =  3.8;
+		physics.acceleration.max_delta_x =  1.2;
+		physics.acceleration.max_delta_y =  35.2;
+	}
+
+
+	public function set_person_mode() {
+		is_on_water = false;
+		skin.set_person_mode();
+		skin.length = 75;
+
+		// physics.acceleration.friction =  0.2090;
+		physics.acceleration.spin =  0.9;
+		// physics.acceleration.thrust =  0.19;
+		physics.acceleration.max_delta_r =  3.8;
+		physics.acceleration.max_delta_x =  1.2;
+		physics.acceleration.max_delta_y =  10.2;
+	}
+
+	public function stop() {
+		skin.sprite.tile_index = 0;
+		physics.acceleration.max_delta_r =  0;
+		physics.acceleration.max_delta_x =  0;
+		physics.acceleration.max_delta_y =  0;
+
+		physics.thrust_delta = 0;
+		physics.velocity.delta_r = 0;
+		physics.velocity.delta_y = 0;
+		physics.velocity.delta_x = 0;
+		physics.position.r_previous = physics.position.r;
+		physics.position.x_previous = physics.position.x;
+		physics.position.y_previous = physics.position.y;
 	}
 }
 
@@ -311,7 +359,6 @@ class ProjectileCache extends ObjectCache<Projectile> {
 		item.on_cache();
 	}
 }
-
 
 enum BoatState {
 	IDLE;

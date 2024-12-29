@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
 	
-	<meta title="fishy-business demo" package="fishy-business" version="0.1.0" company="ob ltd" />
+	<meta title="Savage Sailing" package="fishy-business" version="0.1.0" company="ob ltd" />
 	
 	<android target-sdk-version="28" />
 	<!-- <meta build-number="714" /> --> <!-- let set the buildnumber manual (android) -->
@@ -11,17 +11,11 @@
 	<window if="html5" allowHighDPI="false" />
 	
 	<app main="Main" path="dist" file="Main" />
+	<!-- <app main="test.Fishing.Main" path="dist" file="Main" /> -->
 	<!-- <define name="stats" if="html5" /> -->
 
 	<source path="src" />
 
-	<!-- the main demonstration of the platformer tools here -->
-	<!-- <source path="demo/platformer" />  -->
-
-	<!-- uncomment below to compile other demos -->
-	<!-- <source path="demo/fontVGA" /> 
-	<source path="demo/bezier" /> 
-	<source path="/home/jf/code/haxe/peote/ob/trakhx/src" />  -->
 	
 	<!-- application layer -->
 	<haxelib name="lime" />	

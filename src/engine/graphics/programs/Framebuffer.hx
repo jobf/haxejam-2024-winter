@@ -8,7 +8,7 @@ class Framebuffer extends Display {
 	var program:Program;
 	var frame:Basic;
 
-	public function new(peote_view:PeoteView, width:Int, height:Int, color:Color = 0x00000000) {
+	public function new(peote_view:PeoteView, width:Int, height:Int, color:Color = 0x000000ff) {
 		super(0, 0, width, height, color);
 		peote_view.addFramebufferDisplay(this);
 		setFramebuffer(new Texture(width, height));

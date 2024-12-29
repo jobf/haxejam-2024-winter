@@ -8,8 +8,8 @@ import hxmath.math.Vector2;
 class Course
 {
 	var model:CourseModel;
-	var width:Float = 3000;
-	var height:Float = 3000;
+	var width:Float = 2990;
+	var height:Float = 2990;
 
 
 	// var model_index = 252;
@@ -17,24 +17,48 @@ class Course
 	// var start_y = 1700;
 
 
+// real
 	var model_index = 249;
 	var start_x = 100;
 	var start_y = 950;
-	var end_zone:Rectangle;
-	
 
+	// for debugging land transition
+	// var start_x = 268;
+	// var start_y = 2008;
+
+	// for debugging land section
+	// var start_x = 1822;
+	// var start_y = 1530;
+
+	var person_checkpoint:Rectangle;
+	var fishing_checkpoint:Rectangle;
+	var bonus_checkpoint:Rectangle;
 
 	public function new(json:String){
 		
 		
 		var file = Deserialize.parse_file_contents(json);
 		model = file.models[model_index];
-		// end_zone = new Rectangle(1682, 1337, 344, 416);
-		end_zone = {
-			x: 1682,
+		// person_checkpoint = new Rectangle(1682, 1337, 344, 416);
+		person_checkpoint = {
+			x: 1675,
 			y: 1337,
 			width: 344,
 			height: 416
+		}
+
+		fishing_checkpoint = {
+			x: 1008,
+			y: 2061,
+			width: 133,
+			height: 214
+		}
+
+		bonus_checkpoint = {
+			x: 0,
+			y: 1055,
+			width: 752,
+			height: 330
 		}
 	}
 

@@ -1,7 +1,6 @@
 package engine.graphics.elements;
 
 import engine.geom.Shapes;
-import hxmath.math.Vector3;
 import hxmath.math.Vector2;
 import peote.view.*;
 
@@ -91,7 +90,7 @@ class Basic implements Element {
 		var y = Math.min(y_start, y_end);
 		var w = Math.max(x_start, x_end) - x;
 		var h = Math.max(y_start, y_end) - y;
-		filled = new Basic(x + 2, y + 2, w - 4, h - 4, 0x70007010, false);
+		filled = new Basic(x + 2, y + 2, w - 4, h - 4, 0x70007000, false);
 
 		return [from, to];
 	}
